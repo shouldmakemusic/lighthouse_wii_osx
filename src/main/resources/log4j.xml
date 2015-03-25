@@ -10,26 +10,21 @@
 		</layout>
 	</appender>
 
-	<appender name="socket" class="org.apache.log4j.net.SocketAppender">
-		<param name="Port" value="4712" />
-		<param name="RemoteHost" value="localhost" />
+	<appender name="gui" class="net.hirschauer.yaas.lighthouse.bluetooth.Logger2OSC">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p %c{1} - %m%n" />
+		</layout>
 	</appender>
-
-<!-- 	<appender name="gui" class="net.hirschauer.yaas.lighthouse.util.TextAreaAppender"> -->
-<!-- 		<layout class="org.apache.log4j.PatternLayout"> -->
-<!-- 			<param name="ConversionPattern" value="%-5p %c{1} - %m%n" /> -->
-<!-- 		</layout> -->
-<!-- 	</appender> -->
-
-	<root>
-		<priority value="info" />
-		<appender-ref ref="console" />
-<!-- 		<appender-ref ref="socket" /> -->
-<!-- 		<appender-ref ref="gui" /> -->
-	</root>
 
 	<category name="net.hirschauer.yaas">
 		<priority value="debug" />
 	</category>
+	
+	<root>
+		<priority value="info" />
+		<appender-ref ref="console" />
+		<appender-ref ref="gui" />
+	</root>
+
 
 </log4j:configuration>

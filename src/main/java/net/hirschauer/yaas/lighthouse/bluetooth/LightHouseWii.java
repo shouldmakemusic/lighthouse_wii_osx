@@ -5,7 +5,7 @@ import java.net.InetSocketAddress;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wiigee.control.WiimoteWiigee; 
+import org.wiigee.control.WiimoteWiigee;
 import org.wiigee.device.Wiimote;
 import org.wiigee.event.AccelerationEvent;
 import org.wiigee.event.AccelerationListener;
@@ -21,7 +21,6 @@ import org.wiigee.event.RotationListener;
 import org.wiigee.event.RotationSpeedEvent;
 import org.wiigee.filter.HighPassFilter;
 import org.wiigee.filter.RotationThresholdFilter;
-import org.wiigee.util.Log;
 
 import de.sciss.net.OSCClient;
 import de.sciss.net.OSCMessage;
@@ -35,11 +34,14 @@ public class LightHouseWii implements AccelerationListener, ButtonListener, Rota
 	private Logger logger = LoggerFactory.getLogger(LightHouseWii.class);
 	
 	public LightHouseWii() {
+		
+		logger.debug("Try detection of a wii");
+		logger.debug("Remember to first disconnect on osx bluetooth menu");
 		wiigee = new WiimoteWiigee();
         try {
             Wiimote wm = this.wiigee.getDevice();
             if (wm != null) {
-                System.out.println("Found a Wiimote!");
+                logger.info("Found a Wiimote!");
                 this.wiimote = wm;
                 this.setupWiimote();
             }
@@ -52,7 +54,7 @@ public class LightHouseWii implements AccelerationListener, ButtonListener, Rota
             client.start();
             
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage(), ex);
         }
 	}
 	
@@ -65,8 +67,7 @@ public class LightHouseWii implements AccelerationListener, ButtonListener, Rota
 	        this.wiimote.addRotationFilter(new RotationThresholdFilter(0.5));
 	        
 	    } catch(Exception e) {
-            Log.write("Error in: setupWiimote()");
-            e.printStackTrace();
+	    	logger.error("Error in: setupWiimote()");
 	    }
 	
 	    this.wiimote.addAccelerationListener(this);
@@ -104,7 +105,7 @@ public class LightHouseWii implements AccelerationListener, ButtonListener, Rota
 
 	@Override
 	public void buttonPressReceived(ButtonPressedEvent event) {
-		System.out.println("Button " + event.getButton());
+//		logger.debug("Button " + event.getButton());
 		String button = "";
 		switch (event.getButton()) {
 		case ButtonPressedEvent.BUTTON_1:
